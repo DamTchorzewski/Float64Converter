@@ -6,9 +6,17 @@ Projekt dydaktyczny realizowany w języku **C#** w ramach przedmiotu *Architektu
 ---
 
 
-## 👥 Autorzy
-- **Damian Tchorzewski** – Kierownik zespołu, integracja i dokumentacja  
-- **Zespół Projektowy 11** – Architektura Systemów Komputerowych
+## 👥 Autorzy 
+### Zespół Projektowy 11 – Architektura Systemów Komputerowych
+
+ - **Damian Tchorzewski** 72206 – Kierownik zespołu, integracja i dokumentacja 
+ - **Mateusz von Schiller** 76203
+ - **Patryk Wichowski** 60379
+ - **Cezary Wroniak** 73636
+ - **Joanna Wysokińska** 71598
+ - **Mateusz Zątek** 72781
+ - **Bartłomiej Zygmunt** 74355
+		
 
 ---
 
