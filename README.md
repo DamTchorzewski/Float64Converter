@@ -131,5 +131,5 @@ https://github.com/DamTchorzewski/Float64Converter
 
 
 ## 💡 Kontakt
-<a href:mailto:dtchorz2@stu.vistula.edu.pl> – kierownik zespołu </a>
+<a href="mailto:dtchorz2@stu.vistula.edu.pl"> kierownik zespołu </a>
 
