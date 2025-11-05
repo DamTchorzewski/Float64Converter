@@ -55,7 +55,7 @@ Następnie uruchom projekt skrótem Ctrl + F5
 lub przyciskiem ▶ Start (bez debugowania).
 
 🌿 Zasady pracy zespołowej z Git
-1️⃣ Utwórz własnego brancha
+#### 1️⃣ Utwórz własnego brancha
 
 Każdy członek zespołu pracuje wyłącznie na swoim branchu:
 ```bash
@@ -65,7 +65,7 @@ Przykład:
 ```bash
 git checkout -b nazwa-brancha
 ```
-### 2️⃣ Wprowadzaj zmiany tylko na swoim branchu
+#### 2️⃣ Wprowadzaj zmiany tylko na swoim branchu
 
 Dodaj lub edytuj pliki w swoim zakresie (np. moduł, testy, dokumentacja).
 Po każdej zmianie wykonaj commit:
@@ -73,11 +73,11 @@ Po każdej zmianie wykonaj commit:
 git add .
 git commit -m "Opis wprowadzonych zmian"
 ```
-### 3️⃣ Wysyłaj zmiany na GitHub
+#### 3️⃣ Wysyłaj zmiany na GitHub
 ```bash
 git push origin nazwa-brancha
 ```
-### 4️⃣ Aktualizowanie swojego brancha (opcjonalnie)
+#### 4️⃣ Aktualizowanie swojego brancha (opcjonalnie)
 
 Jeśli repozytorium zostało zaktualizowane na main, wykonaj:
 ```bash
