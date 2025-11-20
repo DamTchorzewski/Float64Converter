@@ -18,6 +18,17 @@ class Program
         // Użycie ręcznego parsera (bez double.TryParse) - pełna implementacja manualna
         if (!string.IsNullOrWhiteSpace(input) && NumberParser.TryParse(input, out double number))
         {
+            // Informacja o rzeczywistej wartości (po zaokrągleniu przez typ double)
+            Console.WriteLine($"Wprowadzona wartość: {input}");
+            Console.WriteLine($"Rzeczywista wartość double: {number}");
+            
+            // Ostrzeżenie o zaokrągleniu, jeśli wystąpiło
+            if (input.Trim() != number.ToString())
+            {
+                Console.WriteLine("⚠ UWAGA: Wartość została zaokrąglona do najbliższej reprezentowalnej liczby double.");
+            }
+            Console.WriteLine();
+            
             // Wyświetlenie szczegółów konwersji IEEE 754
             ConversionEngine.DisplayBinaryDetails(number);
         }

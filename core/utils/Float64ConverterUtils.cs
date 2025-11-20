@@ -53,10 +53,15 @@ namespace core.utils
                 }
                 
                 // Mnożenie przez 2 dla liczb < 1
-                while (absNumber < 1.0)
+                // Maksymalna liczba iteracji: 1074 (zakres wykładnika IEEE 754: -1022 - 52 bity mantysy)
+                int iterationCount = 0;
+                const int maxIterations = 1075;
+                
+                while (absNumber < 1.0 && iterationCount < maxIterations)
                 {
                     absNumber *= 2.0;
                     exponent--;
+                    iterationCount++;
                 }
 
                 // Rozróżnienie przypadków: subnormal, overflow, normal
