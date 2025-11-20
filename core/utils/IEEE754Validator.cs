@@ -1,9 +1,11 @@
 namespace core.utils
 {
     // Klasa pomocnicza do weryfikacji poprawno?ci konwersji IEEE 754
+    // Umo?liwia rekonstrukcj? warto?ci dziesi?tnej z bitów oraz porównywanie z tolerancj? b??du
     public static class IEEE754Validator
     {
-        // Weryfikuje poprawno?? konwersji poprzez rekonstrukcj? warto?ci dziesi?tnej
+        // Rekonstruuje warto?? double z komponentów IEEE 754 (znak, wyk?adnik, mantysa)
+        // Obs?uguje wszystkie przypadki specjalne: zero, infinity, NaN, subnormal, normal
         public static double ReconstructFromIEEE754(ulong signBit, ulong exponent, ulong mantissa)
         {
             // Obs?uga zera
@@ -18,7 +20,7 @@ namespace core.utils
                 return signBit == 1 ? double.NegativeInfinity : double.PositiveInfinity;
             }
 
-            // Obs?uga NaN
+            // Obs?uga NaN (Not a Number)
             if (exponent == 0x7FF && mantissa != 0)
             {
                 return double.NaN;
@@ -26,53 +28,56 @@ namespace core.utils
 
             double result;
 
-            // Liczby zdenormalizowane (subnormal)
+            // Liczby zdenormalizowane (subnormal) - wyk?adnik = 0, mantysa ? 0
             if (exponent == 0)
             {
-                // Rekonstrukcja mantysy bez ukrytego bitu
+                // Rekonstrukcja mantysy bez ukrytego bitu (r?czne pot?gowanie)
                 double fraction = 0.0;
                 for (int i = 0; i < 52; i++)
                 {
                     if ((mantissa & (1UL << (51 - i))) != 0)
                     {
-                        fraction += System.Math.Pow(2, -(i + 1));
+                        fraction += MathHelpers.Pow2(-(i + 1));
                     }
                 }
-                result = fraction * System.Math.Pow(2, -1022);
+                result = fraction * MathHelpers.Pow2(-1022);
             }
             else // Liczby znormalizowane
             {
-                // Rzeczywisty wyk?adnik
+                // Rzeczywisty wyk?adnik (z odj?ciem biasu 1023)
                 int realExponent = (int)exponent - 1023;
 
-                // Rekonstrukcja mantysy (z ukrytym bitem 1)
+                // Rekonstrukcja mantysy z ukrytym bitem 1 (r?czne pot?gowanie)
                 double fraction = 1.0;
                 for (int i = 0; i < 52; i++)
                 {
                     if ((mantissa & (1UL << (51 - i))) != 0)
                     {
-                        fraction += System.Math.Pow(2, -(i + 1));
+                        fraction += MathHelpers.Pow2(-(i + 1));
                     }
                 }
 
-                result = fraction * System.Math.Pow(2, realExponent);
+                result = fraction * MathHelpers.Pow2(realExponent);
             }
 
             // Zastosowanie znaku
             return signBit == 1 ? -result : result;
         }
 
-        // Porównuje dwie warto?ci double z tolerancj? b??du
+        // Porównuje dwie warto?ci double z konfigurowaln? tolerancj? b??du
+        // U?ywa r?cznych implementacji operacji matematycznych
         public static bool AreEqual(double a, double b, double tolerance = 1e-10)
         {
-            // Obs?uga specjalnych warto?ci
-            if (double.IsNaN(a) && double.IsNaN(b)) return true;
-            if (double.IsInfinity(a) && double.IsInfinity(b)) return a == b;
+            // Obs?uga warto?ci specjalnych (r?czne sprawdzanie)
+            if (MathHelpers.IsNaN(a) && MathHelpers.IsNaN(b)) return true;
+            if (MathHelpers.IsInfinity(a) && MathHelpers.IsInfinity(b)) return a == b;
             if (a == 0.0 && b == 0.0) return true;
 
-            // Porównanie z tolerancj?
-            return System.Math.Abs(a - b) < tolerance || 
-                   System.Math.Abs((a - b) / System.Math.Max(System.Math.Abs(a), System.Math.Abs(b))) < tolerance;
+            // Porównanie z tolerancj? (r?czne obliczenia)
+            double diff = MathHelpers.Abs(a - b);
+            double maxAbs = MathHelpers.Max(MathHelpers.Abs(a), MathHelpers.Abs(b));
+            
+            return diff < tolerance || MathHelpers.Abs((a - b) / maxAbs) < tolerance;
         }
     }
 }

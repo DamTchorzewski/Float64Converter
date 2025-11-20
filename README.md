@@ -110,7 +110,7 @@ Float64Converter/
 ├── README.md                     # Dokumentacja projektu
 │
 ├── core/                         # Główna logika aplikacji
-│   ├── ConversionEngine.cs       # Silnik konwersji IEEE 754
+│   ├── ConversionEngine.cs       # Silnik konwersji i wyświetlania wyników IEEE 754
 │   │
 │   ├── components/               # Komponenty elektroniczne
 │   │   ├── FullAdder.cs         # Pełny sumator binarny
@@ -123,7 +123,7 @@ Float64Converter/
 │   │   ├── Bus8bit.cs           # 8-bitowa magistrala danych
 │   │   ├── Clock.cs             # Generator sygnału zegarowego
 │   │   ├── CPU.cs               # Główna klasa procesora 8-bit
-│   │   ├── CPU64bit.cs          # Procesor 64-bitowy
+│   │   ├── CPU64bit.cs          # Procesor 64-bitowy dla operacji IEEE 754
 │   │   ├── Demux8bit.cs         # 8-bitowy demultiplekser
 │   │   ├── Mux8bit.cs           # 8-bitowy multiplekser
 │   │   │
@@ -145,8 +145,11 @@ Float64Converter/
 │   │   ├── OrGate.cs            # Bramka OR
 │   │   └── XorGate.cs           # Bramka XOR
 │   │
-│   └── utils/                    # Funkcje pomocnicze
-│       └── Float64ConverterUtils.cs # Narzędzia konwersji
+│   └── utils/                    # Funkcje pomocnicze - wszystkie ręczne implementacje
+│       ├── Float64ConverterUtils.cs  # Ręczna konwersja decimal → IEEE 754
+│       ├── IEEE754Validator.cs       # Weryfikacja poprawności przez rekonstrukcję
+│       ├── MathHelpers.cs            # Ręczne funkcje matematyczne (Abs, Pow2, IsNaN, etc.)
+│       └── NumberParser.cs           # Ręczny parser liczb i notacji naukowej
 │
 ├── tests/                        # Testy jednostkowe projektu
 │
