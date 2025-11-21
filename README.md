@@ -13,7 +13,7 @@ Projekt dydaktyczny realizowany w języku **C#** w ramach przedmiotu *Architektu
  - **Mateusz von Schiller** 76203
  - **Patryk Wichowski** 60379
  - **Cezary Wroniak** 73636
- - **Joanna Wysokińska** 71598
+ - **Joanna Wysokińska** 71598 – Specyfikacja i projekt algorytmu konwersji (IEEE 754 double)
  - **Mateusz Zątek** 72781
  - **Bartłomiej Zygmunt** 74355
 		
@@ -24,7 +24,7 @@ Projekt dydaktyczny realizowany w języku **C#** w ramach przedmiotu *Architektu
 
 Aplikacja konsolowa służąca do symulacji procesu konwersji liczby dziesiętnej na format zmiennoprzecinkowy **IEEE 754 (64-bit, double precision)**.  
 Program umożliwia:
-- wprowadzenie liczby dziesiętnej w różnych formatach (np. `5.75`, `-0.125`, `1e3`),
+- wprowadzenie liczby dziesiętnej w różnych formatach (np. `5,75`, `-0,125`, `1e3`),
 - konwersję na reprezentację 64-bitową (znak, wykładnik, mantysa),
 - prezentację poszczególnych pól bitowych (S / E / M),
 - opcjonalny tryb „krok po kroku” (debug),
@@ -96,36 +96,70 @@ lub (bezpieczniej):
 ```bash
 git rebase origin/main
 ```
-## 🧩 Proponowana struktura projektu
+## 🧩 Aktualna struktura projektu
 
-Poniższa struktura katalogów zapewnia czytelność i modularność kodu w miarę rozwoju projektu.  
-Każdy moduł (np. konwersja, formatowanie bitów, interfejs CLI) znajduje się w osobnym pliku lub folderze.
+Projekt implementuje symulator procesora 64-bitowego z bramkami logicznymi, rejestrami i jednostkami arytmetyczno-logicznymi.  
+Każdy moduł (bramki, rejestry, ALU, CPU) znajduje się w osobnym pliku lub folderze zapewniając modularność kodu.
 
 ```bash
 Float64Converter/
 │
-├── Float64Converter.sln # Plik rozwiązania Visual Studio
-├── Float64Converter.csproj # Główny projekt C#
-├── Program.cs # Punkt wejścia aplikacji (CLI)
+├── Float64Converter.sln          # Plik rozwiązania Visual Studio
+├── Float64Converter.csproj       # Główny projekt C#
+├── Program.cs                    # Punkt wejścia aplikacji (CLI)
+├── README.md                     # Dokumentacja projektu
 │
-├── Core/ # Logika konwersji i obliczeń
-│ ├── ConversionEngine.cs # Główna klasa konwersji IEEE 754
-│ ├── BitFormatter.cs # Formatowanie i analiza bitów (znak, wykładnik, mantysa)
-│ ├── BinaryHelper.cs # Pomocnicze funkcje binarne (konwersje, maski, itd.)
-│ └── DoubleDecomposer.cs # Rozbicie liczby double na części składowe
+├── core/                         # Główna logika aplikacji
+│   ├── ConversionEngine.cs       # Silnik konwersji i wyświetlania wyników IEEE 754
+│   │
+│   ├── components/               # Komponenty elektroniczne
+│   │   ├── FullAdder.cs         # Pełny sumator binarny
+│   │   └── HalfAdder.cs         # Półsumator binarny
+│   │
+│   ├── cpu/                      # Komponenty procesora
+│   │   ├── Adder8bit.cs         # 8-bitowy sumator
+│   │   ├── ALU8bit.cs           # 8-bitowa jednostka arytmetyczno-logiczna
+│   │   ├── ALU64bit.cs          # 64-bitowa jednostka arytmetyczno-logiczna
+│   │   ├── Bus8bit.cs           # 8-bitowa magistrala danych
+│   │   ├── Clock.cs             # Generator sygnału zegarowego
+│   │   ├── CPU.cs               # Główna klasa procesora 8-bit
+│   │   ├── CPU64bit.cs          # Procesor 64-bitowy dla operacji IEEE 754
+│   │   ├── Demux8bit.cs         # 8-bitowy demultiplekser
+│   │   ├── Mux8bit.cs           # 8-bitowy multiplekser
+│   │   │
+│   │   ├── DEMUX/               # Komponenty demultipleksera
+│   │   │   └── SendToRegister.cs # Przesyłanie danych do rejestru
+│   │   │
+│   │   └── registers/            # Rejestry i przerzutniki
+│   │       ├── BitRegister.cs   # Rejestr 1-bitowy
+│   │       ├── DFlipFlop.cs     # Przerzutnik typu D
+│   │       ├── Register8bit.cs  # Rejestr 8-bitowy
+│   │       ├── Register64bit.cs # Rejestr 64-bitowy
+│   │       └── SRLatch.cs       # Przerzutnik SR
+│   │
+│   ├── gates/                    # Bramki logiczne
+│   │   ├── AndGate.cs           # Bramka AND
+│   │   ├── NandGate.cs          # Bramka NAND
+│   │   ├── NorGate.cs           # Bramka NOR
+│   │   ├── NotGate.cs           # Bramka NOT
+│   │   ├── OrGate.cs            # Bramka OR
+│   │   └── XorGate.cs           # Bramka XOR
+│   │
+│   └── utils/                    # Funkcje pomocnicze - wszystkie ręczne implementacje
+│       ├── Float64ConverterUtils.cs  # Ręczna konwersja decimal → IEEE 754
+│       ├── IEEE754Validator.cs       # Weryfikacja poprawności przez rekonstrukcję
+│       ├── MathHelpers.cs            # Ręczne funkcje matematyczne (Abs, Pow2, IsNaN, etc.)
+│       └── NumberParser.cs           # Ręczny parser liczb i notacji naukowej
 │
-├── Utils/ # Dodatkowe klasy pomocnicze
-│ ├── FileExporter.cs # Zapis wyników konwersji do pliku
-│ ├── InputValidator.cs # Walidacja danych wejściowych
-│ └── ConsoleUI.cs # Obsługa formatowanego wyjścia w konsoli
+├── tests/                        # Testy jednostkowe projektu
 │
-├── Tests/ # Testy jednostkowe projektu
-│ ├── ConversionEngineTests.cs # Testy poprawności konwersji IEEE 754
-│ ├── BitFormatterTests.cs # Testy formatowania bitów
-│ └── InputValidatorTests.cs # Testy walidacji danych wejściowych
+├── bin/                          # Pliki wynikowe kompilacji
+│   ├── Debug/net8.0/            # Kompilacja Debug
+│   └── Release/net8.0/          # Kompilacja Release
 │
-├── .gitignore # Ignorowane pliki i katalogi (bin, obj, .vs, itd.)
-└── README.md # Dokumentacja pomocnicza projektu
+└── obj/                          # Pliki pośrednie kompilacji
+    ├── Debug/net8.0/            # Pliki pośrednie Debug
+    └── Release/net8.0/          # Pliki pośrednie Release
 ```
 
 ## 📚 Dokumentacja techniczna
