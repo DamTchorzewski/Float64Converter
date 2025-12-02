@@ -27,8 +27,8 @@ Program umożliwia:
 - wprowadzenie liczby dziesiętnej w różnych formatach (np. `5,75`, `-0,125`, `1e3`),
 - konwersję na reprezentację 64-bitową (znak, wykładnik, mantysa),
 - prezentację poszczególnych pól bitowych (S / E / M),
-- opcjonalny tryb „krok po kroku” (debug),
-- zapis wyników konwersji do pliku (w kolejnych etapach projektu).
+- opcjonalny tryb „krok po kroku" (debug),
+- zapis wyników konwersji do pliku `output.txt` (katalog: `bin/Debug/net8.0/`).
 
 ---
 
@@ -62,6 +62,23 @@ File → Open → Project/Solution → Float64Converter.sln
 Następnie uruchom projekt skrótem Ctrl + F5
 lub przyciskiem ▶ Start (bez debugowania).
 
+### 3️⃣ Korzystanie z menu aplikacji
+
+Po uruchomieniu zobaczysz interaktywne menu:
+```
+=== Symulator konwersji liczby dziesiętnej na IEEE 754 (double precision) ===
+1 - Konwersja (wynik binarny + szesnastkowy)
+2 - Konwersja (tryb KROK PO KROKU + szczegóły)
+3 - Wyświetl zawartość pliku output.txt
+4 - Wyczyść plik output.txt
+5 - Wyjście
+```
+
+**Plik wyników:** `bin/Debug/net8.0/output.txt`  
+Program automatycznie zapisuje wyniki konwersji z timestampem w tym pliku.
+
+---
+
 🌿 Zasady pracy zespołowej z Git
 #### 1️⃣ Utwórz własnego brancha
 
@@ -71,7 +88,7 @@ git checkout -b nazwa-brancha
 ```
 Przykład:
 ```bash
-git checkout -b nazwa-brancha
+git checkout -b feature/moja-funkcjonalnosc
 ```
 #### 2️⃣ Wprowadzaj zmiany tylko na swoim branchu
 
@@ -96,52 +113,37 @@ lub (bezpieczniej):
 ```bash
 git rebase origin/main
 ```
+
+---
+
 ## 🧩 Aktualna struktura projektu
 
-Projekt implementuje symulator procesora 64-bitowego z bramkami logicznymi, rejestrami i jednostkami arytmetyczno-logicznymi.  
-Każdy moduł (bramki, rejestry, ALU, CPU) znajduje się w osobnym pliku lub folderze zapewniając modularność kodu.
+Projekt implementuje symulator konwersji IEEE 754 (64-bit) z wykorzystaniem niskopoziomowych komponentów elektronicznych.  
+Każdy moduł znajduje się w osobnym pliku, zapewniając modularność i czytelność kodu.
 
 ```bash
 Float64Converter/
 │
 ├── Float64Converter.sln          # Plik rozwiązania Visual Studio
 ├── Float64Converter.csproj       # Główny projekt C#
-├── Program.cs                    # Punkt wejścia aplikacji (CLI)
+├── Program.cs                    # Punkt wejścia aplikacji (CLI) z menu i trybami
 ├── README.md                     # Dokumentacja projektu
 │
 ├── core/                         # Główna logika aplikacji
 │   ├── ConversionEngine.cs       # Silnik konwersji i wyświetlania wyników IEEE 754
 │   │
 │   ├── components/               # Komponenty elektroniczne
-│   │   ├── FullAdder.cs         # Pełny sumator binarny
-│   │   └── HalfAdder.cs         # Półsumator binarny
+│   │   └── FullAdder.cs         # Pełny sumator binarny (używany w architekturze)
 │   │
-│   ├── cpu/                      # Komponenty procesora
-│   │   ├── Adder8bit.cs         # 8-bitowy sumator
-│   │   ├── ALU8bit.cs           # 8-bitowa jednostka arytmetyczno-logiczna
+│   ├── cpu/                      # Komponenty procesora 64-bit
 │   │   ├── ALU64bit.cs          # 64-bitowa jednostka arytmetyczno-logiczna
-│   │   ├── Bus8bit.cs           # 8-bitowa magistrala danych
-│   │   ├── Clock.cs             # Generator sygnału zegarowego
-│   │   ├── CPU.cs               # Główna klasa procesora 8-bit
 │   │   ├── CPU64bit.cs          # Procesor 64-bitowy dla operacji IEEE 754
-│   │   ├── Demux8bit.cs         # 8-bitowy demultiplekser
-│   │   ├── Mux8bit.cs           # 8-bitowy multiplekser
 │   │   │
-│   │   ├── DEMUX/               # Komponenty demultipleksera
-│   │   │   └── SendToRegister.cs # Przesyłanie danych do rejestru
-│   │   │
-│   │   └── registers/            # Rejestry i przerzutniki
-│   │       ├── BitRegister.cs   # Rejestr 1-bitowy
-│   │       ├── DFlipFlop.cs     # Przerzutnik typu D
-│   │       ├── Register8bit.cs  # Rejestr 8-bitowy
-│   │       ├── Register64bit.cs # Rejestr 64-bitowy
-│   │       └── SRLatch.cs       # Przerzutnik SR
+│   │   └── registers/            # Rejestry 64-bitowe
+│   │       └── Register64bit.cs # Rejestr 64-bitowy (znak, wykładnik, mantysa)
 │   │
 │   ├── gates/                    # Bramki logiczne
 │   │   ├── AndGate.cs           # Bramka AND
-│   │   ├── NandGate.cs          # Bramka NAND
-│   │   ├── NorGate.cs           # Bramka NOR
-│   │   ├── NotGate.cs           # Bramka NOT
 │   │   ├── OrGate.cs            # Bramka OR
 │   │   └── XorGate.cs           # Bramka XOR
 │   │
@@ -151,16 +153,46 @@ Float64Converter/
 │       ├── MathHelpers.cs            # Ręczne funkcje matematyczne (Abs, Pow2, IsNaN, etc.)
 │       └── NumberParser.cs           # Ręczny parser liczb i notacji naukowej
 │
-├── tests/                        # Testy jednostkowe projektu
-│
 ├── bin/                          # Pliki wynikowe kompilacji
 │   ├── Debug/net8.0/            # Kompilacja Debug
+│   │   ├── Float64Converter.exe # Plik wykonywalny
+│   │   └── output.txt           # ⭐ Plik z wynikami konwersji (generowany przez aplikację)
 │   └── Release/net8.0/          # Kompilacja Release
 │
 └── obj/                          # Pliki pośrednie kompilacji
     ├── Debug/net8.0/            # Pliki pośrednie Debug
     └── Release/net8.0/          # Pliki pośrednie Release
 ```
+
+---
+
+## 🎯 Kluczowe cechy implementacji
+
+- ✅ **Ręczna konwersja IEEE 754** - bez użycia `BitConverter`, `Convert.ToString()`
+- ✅ **Brak `System.Math`** - wszystkie funkcje matematyczne zaimplementowane manualnie
+- ✅ **Ręczny parser liczb** - parser dziesiętny i notacji naukowej bez `double.TryParse()`
+- ✅ **Walidacja przez rekonstrukcję** - weryfikacja poprawności konwersji
+- ✅ **Architektura procesorowa** - symulacja CPU 64-bit z rejestrami i ALU
+- ✅ **Interfejs konsolowy** - menu z trybem standardowym i krokiem po kroku
+- ✅ **Zapis do pliku** - automatyczne logowanie wyników konwersji do `bin/Debug/net8.0/output.txt`
+- ✅ **Zarządzanie plikiem** - podgląd i czyszczenie zawartości przez menu
+
+---
+
+## 📝 Format pliku wyników
+
+Plik `output.txt` zawiera timestamped entries w formacie:
+
+```
+[2025-12-02 14:30:15] TRYB 1
+Wejście : 5.75
+double  : 5,75
+binary  : 0100000000010110000000000000000000000000000000000000000000000000
+hex     : 0x4017000000000000
+------------------------------------------------------------
+```
+
+---
 
 ## 📚 Dokumentacja techniczna
 Szczegółowy opis algorytmu, struktury danych i wyników testów znajduje się w raporcie:
