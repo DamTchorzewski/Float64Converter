@@ -120,11 +120,11 @@ namespace Float64Converter
             // KROK 2 – wykładnik
             Console.WriteLine();
             Console.WriteLine("Krok 2: wykładnik (Exponent, 11 bitów)");
-            int exponentValue = BinaryToInt(exponent);
-            int exponentUnbiased = exponentValue - 1023; // bias dla double
+            int exponentBiased = BinaryToInt(exponent);
+            int exponentUnbiased = exponentBiased - 1023; // bias dla double
             Console.WriteLine($"  Bity exponenta: {exponent}");
-            Console.WriteLine($"  Wartość całkowita exponenta (biased): {exponentValue}");
-            Console.WriteLine($"  Wartość po odjęciu biasu 1023       : {exponentUnbiased}");
+            Console.WriteLine($"  Wartość całkowita exponenta (biased): {exponentBiased}");
+            Console.WriteLine($"  Wartość po odjęciu biasu 1023 (unbiased): {exponentUnbiased}");
             Console.WriteLine("Wciśnij klawisz, aby przejść dalej...");
             Console.ReadKey();
 
