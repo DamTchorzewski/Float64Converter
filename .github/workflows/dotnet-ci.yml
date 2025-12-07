@@ -21,17 +21,17 @@ jobs:
 
       - name: Restore
         run: |
-          dotnet restore "Float64Converter/Float64Converter.csproj"
-          dotnet restore "Float64Converter/Float64Converter.Tests/Float64Converter.Tests.csproj"
+          dotnet restore "Float64Converter.csproj"
+          dotnet restore "Float64Converter.Tests/Float64Converter.Tests.csproj"
 
       - name: Build
         run: |
-          dotnet build "Float64Converter/Float64Converter.csproj" --configuration Release --no-restore
-          dotnet build "Float64Converter/Float64Converter.Tests/Float64Converter.Tests.csproj" --configuration Release --no-restore
+          dotnet build "Float64Converter.csproj" --configuration Release --no-restore
+          dotnet build "Float64Converter.Tests/Float64Converter.Tests.csproj" --configuration Release --no-restore
 
       - name: Test
         run: |
-          dotnet test "Float64Converter/Float64Converter.Tests/Float64Converter.Tests.csproj" --configuration Release --no-build --logger "trx;LogFileName=test_results.trx"
+          dotnet test "Float64Converter.Tests/Float64Converter.Tests.csproj" --configuration Release --no-build --logger "trx;LogFileName=test_results.trx"
 
       - name: Upload Test Results
         if: always()
