@@ -58,11 +58,11 @@ namespace Float64Converter
             Console.Clear();
             Console.WriteLine("== Tryb 1: wynik binarny + szesnastkowy ==\n");
 
-            if (!ReadAndParseNumber(out double number, out string input))
+            if (!ReadAndParseNumber(out double number, out string input, out NumberParser.EdgeCase edgeCase))
                 return; // wracamy do menu, jeśli błąd
 
             // Użycie RĘCZNEJ konwersji z ConversionEngine (bez BitConverter!)
-            string binary = ConversionEngine.ConvertToIEEE754Binary(number);
+            string binary = ConversionEngine.ConvertToIEEE754Binary(number, edgeCase);
 
             // Podział na komponenty (znak, wykładnik, mantysa)
             string sign = binary.Substring(0, 1);
@@ -97,11 +97,11 @@ namespace Float64Converter
             Console.Clear();
             Console.WriteLine("== Tryb 2: KROK PO KROKU ==\n");
 
-            if (!ReadAndParseNumber(out double number, out string input))
+            if (!ReadAndParseNumber(out double number, out string input, out NumberParser.EdgeCase edgeCase))
                 return; // wracamy do menu, jeśli błąd
 
             // Użycie RĘCZNEJ konwersji z ConversionEngine (bez BitConverter!)
-            string binary = ConversionEngine.ConvertToIEEE754Binary(number);
+            string binary = ConversionEngine.ConvertToIEEE754Binary(number, edgeCase); ;
 
             string sign = binary.Substring(0, 1);
             string exponent = binary.Substring(1, 11);
@@ -245,12 +245,14 @@ namespace Float64Converter
         // =====================================
         // Wspólne wczytywanie i parsowanie liczby
         // =====================================
-        private static bool ReadAndParseNumber(out double number, out string input)
+        private static bool ReadAndParseNumber(out double number, out string input, out NumberParser.EdgeCase edgeCase)
         {
+            edgeCase = NumberParser.EdgeCase.None;
+            
             Console.Write("Podaj liczbę dziesiętną do konwersji: ");
             input = Console.ReadLine() ?? string.Empty;  // zabezpieczenie przed nullem
 
-            if (string.IsNullOrWhiteSpace(input) || !NumberParser.TryParse(input, out number))
+            if (string.IsNullOrWhiteSpace(input) || !NumberParser.TryParse(input, out number, out edgeCase))
             {
                 Console.WriteLine("Nieprawidłowa liczba. Wciśnij dowolny klawisz, aby wrócić do menu...");
                 Console.ReadKey();

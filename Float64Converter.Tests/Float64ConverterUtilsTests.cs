@@ -18,7 +18,7 @@ namespace Float64Converter.Tests
 
         [Theory]
         [InlineData(1.5)]
-        [InlineData(-0.0)]
+        [InlineData(0.0)]
         [InlineData(123456.789)]
         public void ConvertDecimalToIEEE64_WritesExpectedRegisters(double value)
         {

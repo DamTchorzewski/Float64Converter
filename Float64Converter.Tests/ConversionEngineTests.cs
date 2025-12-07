@@ -1,4 +1,5 @@
 using core;
+using core.utils;
 using System;
 using System.IO;
 using Xunit;
@@ -13,7 +14,19 @@ namespace Float64Converter.Tests
         [InlineData(Math.PI)]
         public void ConvertToIEEE754Binary_MatchesBitPattern(double value)
         {
-            string binary = ConversionEngine.ConvertToIEEE754Binary(value);
+            string binary = ConversionEngine.ConvertToIEEE754Binary(value, edgeCase: NumberParser.EdgeCase.None);
+
+            ulong bits = (ulong)BitConverter.DoubleToInt64Bits(value);
+            string expected = Convert.ToString((long)bits, 2).PadLeft(64, '0');
+
+            Assert.Equal(expected, binary);
+        }
+
+        [Theory]
+        [InlineData(-0.0)]
+        public void ConvertToIEEE754Binary_NegativeZero(double value)
+        {
+            string binary = ConversionEngine.ConvertToIEEE754Binary(value, edgeCase: NumberParser.EdgeCase.NegativeZero);
 
             ulong bits = (ulong)BitConverter.DoubleToInt64Bits(value);
             string expected = Convert.ToString((long)bits, 2).PadLeft(64, '0');
