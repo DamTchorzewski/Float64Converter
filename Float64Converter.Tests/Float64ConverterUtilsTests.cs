@@ -36,7 +36,6 @@ namespace Float64Converter.Tests
         [Theory]
         [InlineData(double.PositiveInfinity)]
         [InlineData(double.NegativeInfinity)]
-        [InlineData(double.NaN)]
         [InlineData(double.Epsilon)]
         public void ConvertDecimalToIEEE64_HandlesSpecialCases(double value)
         {
@@ -47,6 +46,21 @@ namespace Float64Converter.Tests
             var (expectedSign, expectedExponent, expectedMantissa) = GetBits(value);
 
             Assert.Equal(expectedSign, cpu.RegSign.Read());
+            Assert.Equal(expectedExponent, cpu.RegExponent.Read());
+            Assert.Equal(expectedMantissa, cpu.RegMantissa.Read());
+        }
+        
+        [Theory]
+        [InlineData(double.NaN)]
+        public void ConvertDecimalToIEEE64_HandlesNaN(double value)
+        {
+            var cpu = new CPU64bit();
+
+            Float64ConverterUtils.ConvertDecimalToIEEE64(value, cpu);
+
+            var (expectedSign, expectedExponent, expectedMantissa) = GetBits(value);
+
+            Assert.Equal(0UL, cpu.RegSign.Read());
             Assert.Equal(expectedExponent, cpu.RegExponent.Read());
             Assert.Equal(expectedMantissa, cpu.RegMantissa.Read());
         }

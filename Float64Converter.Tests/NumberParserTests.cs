@@ -14,7 +14,7 @@ namespace Float64Converter.Tests
         [InlineData("-2.5E1", -25.0)]
         public void TryParse_ParsesValidNumbers(string input, double expected)
         {
-            Assert.True(NumberParser.TryParse(input, out double result));
+            Assert.True(NumberParser.TryParse(input, out double result, out NumberParser.EdgeCase edgeCase));
             Assert.Equal(expected, result);
         }
 
@@ -26,7 +26,7 @@ namespace Float64Converter.Tests
         [InlineData("--1")]
         public void TryParse_ReturnsFalseForInvalidInput(string input)
         {
-            Assert.False(NumberParser.TryParse(input, out _));
+            Assert.False(NumberParser.TryParse(input, out double result, out NumberParser.EdgeCase edgeCase));
         }
 
         [Theory]
@@ -35,7 +35,7 @@ namespace Float64Converter.Tests
         [InlineData("NaN", double.NaN)]
         public void TryParse_HandlesSpecialValues(string input, double expected)
         {
-            Assert.True(NumberParser.TryParse(input, out double result));
+            Assert.True(NumberParser.TryParse(input, out double result, out NumberParser.EdgeCase edgeCase));
 
             if (double.IsNaN(expected))
             {
@@ -45,6 +45,19 @@ namespace Float64Converter.Tests
             {
                 Assert.Equal(expected, result);
             }
+        }
+
+        [Theory]
+        [InlineData("-0", NumberParser.EdgeCase.NegativeZero)]
+        [InlineData("-0.0", NumberParser.EdgeCase.NegativeZero)]
+        [InlineData("-0,00000", NumberParser.EdgeCase.NegativeZero)]
+        [InlineData("-0.0000000000000000", NumberParser.EdgeCase.NegativeZero)]
+        [InlineData("-0.000", NumberParser.EdgeCase.NegativeZero)]
+        [InlineData("-0,00000000", NumberParser.EdgeCase.NegativeZero)]
+        public void TryParse_HandlesNegativeZero(string input, NumberParser.EdgeCase expectedEdgeCase)
+        {
+            Assert.True(NumberParser.TryParse(input, out double result, out NumberParser.EdgeCase edgeCase));
+            Assert.Equal(expectedEdgeCase, edgeCase);
         }
     }
 }
