@@ -12,17 +12,7 @@ namespace core.utils
         public static void ConvertDecimalToIEEE64(double number, CPU64bit cpu)
         {
             // Krok 1: Obliczenie bitu znaku (0 = dodatnia, 1 = ujemna)
-            // Uwaga: -0.0 ma ustawiony bit znaku mimo że porównanie (< 0) jest fałszywe.
-            ulong signBit = 0UL;
-            // NaN może mieć różny bit znaku – dopasuj do rzeczywistej reprezentacji środowiska.
-            if (MathHelpers.IsNaN(number))
-            {
-                signBit = ((ulong)BitConverter.DoubleToInt64Bits(number)) >> 63;
-            }
-            else if (number < 0 || MathHelpers.IsNegativeInfinity(number))
-            {
-                signBit = 1UL;
-            }
+            ulong signBit = number < 0 ? 1UL : 0UL;
             cpu.RegSign.Write(signBit, true);
 
             // Krok 2: Obliczenie wartości bezwzględnej (ręczna implementacja)
