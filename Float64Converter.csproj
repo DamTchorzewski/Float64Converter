@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- Exclude test sources from the main application build -->
+  <ItemGroup>
+    <Compile Remove="Float64Converter.Tests/**/*.cs" />
+  </ItemGroup>
+
 </Project>
