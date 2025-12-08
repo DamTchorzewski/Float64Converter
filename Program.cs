@@ -101,7 +101,7 @@ namespace Float64Converter
                 return; // wracamy do menu, jeśli błąd
 
             // Użycie RĘCZNEJ konwersji z ConversionEngine (bez BitConverter!)
-            string binary = ConversionEngine.ConvertToIEEE754Binary(number, edgeCase); ;
+            string binary = ConversionEngine.ConvertToIEEE754Binary(number, edgeCase);
 
             string sign = binary.Substring(0, 1);
             string exponent = binary.Substring(1, 11);
