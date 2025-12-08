@@ -58,7 +58,7 @@ namespace Float64Converter.Tests
 
             Float64ConverterUtils.ConvertDecimalToIEEE64(value, cpu);
 
-            var (expectedSign, expectedExponent, expectedMantissa) = GetBits(value);
+            var (_, expectedExponent, expectedMantissa) = GetBits(value);
 
             Assert.Equal(0UL, cpu.RegSign.Read());
             Assert.Equal(expectedExponent, cpu.RegExponent.Read());
