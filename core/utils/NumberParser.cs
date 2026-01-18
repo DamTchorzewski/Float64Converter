@@ -4,13 +4,22 @@ namespace core.utils
     // Nie u?ywa double.TryParse() - ca?kowicie manualna implementacja parsowania
     public static class NumberParser
     {
+        public enum EdgeCase
+        {
+            None,
+            NegativeZero,
+            PositiveInfinity,
+            NegativeInfinity,
+            NaN
+        }
         // Parsuje string na warto?? double
         // Obs?uguje: liczby ca?kowite, u?amki dziesi?tne, notacj? naukow? (e/E), liczby ujemne
-        // Akceptuje zar�wno kropk? jak i przecinek jako separator dziesi?tny
+        // Akceptuje zar�wno kropk? jak i przecinek jako separator dziesi?tny
         // Zwraca true je?li parsowanie si? powiod?o, false w przeciwnym razie
-        public static bool TryParse(string input, out double result)
+        public static bool TryParse(string input, out double result, out EdgeCase edgeCase)
         {
             result = 0.0;
+            edgeCase = EdgeCase.None;
 
             if (string.IsNullOrWhiteSpace(input))
                 return false;
@@ -22,17 +31,28 @@ namespace core.utils
                 input.Equals("Infinity", System.StringComparison.OrdinalIgnoreCase))
             {
                 result = double.PositiveInfinity;
+                edgeCase = EdgeCase.PositiveInfinity;
                 return true;
             }
             if (input.Equals("-?", System.StringComparison.OrdinalIgnoreCase) ||
                 input.Equals("-Infinity", System.StringComparison.OrdinalIgnoreCase))
             {
                 result = double.NegativeInfinity;
+                edgeCase = EdgeCase.NegativeInfinity;
                 return true;
             }
             if (input.Equals("NaN", System.StringComparison.OrdinalIgnoreCase))
             {
                 result = double.NaN;
+                edgeCase = EdgeCase.NaN;
+                return true;
+            }
+            // Ujednolicone wykrywanie wszystkich wariantów -0 (z kropką/przecinkiem i dowolną liczbą zer)
+            // Przykłady dopasowania: "-0", "-0.0", "-0.00", "-0,000"
+            if (System.Text.RegularExpressions.Regex.IsMatch(input, @"^-0([.,]0+)?$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+            {
+                result = -0.0;
+                edgeCase = EdgeCase.NegativeZero;
                 return true;
             }
 
@@ -157,7 +177,7 @@ namespace core.utils
             if (index < input.Length)
                 return false;
 
-            // Krok 4: Obliczenie ko?cowej warto?ci: mantissa � 10^exponent
+            // Krok 4: Obliczenie ko?cowej warto?ci: mantissa � 10^exponent
             result = mantissa;
 
             if (exponent != 0)

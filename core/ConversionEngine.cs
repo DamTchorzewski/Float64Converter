@@ -10,8 +10,16 @@ namespace core
     {
         // Konwertuje liczbę dziesiętną na 64-bitową reprezentację binarną IEEE 754
         // Zwraca string z pełną reprezentacją binarną (znak + wykładnik + mantysa)
-        public static string ConvertToIEEE754Binary(double value)
+        public static string ConvertToIEEE754Binary(double value, NumberParser.EdgeCase edgeCase)
         {
+            if (edgeCase == NumberParser.EdgeCase.NegativeZero)
+            {
+                // Specjalny przypadek -0.0
+                // bit znaku = 1, wykładnik = 0, mantysa = 0
+                ulong negativeZero64Bits = 1UL << 63;
+                // Zwróć 64‑bitowy string binarny
+                return MathHelpers.ToBinaryString((long)negativeZero64Bits, 64);
+            }
             // Użycie ręcznej konwersji (bez BitConverter)
             CPU64bit cpu = new CPU64bit();
             Float64ConverterUtils.ConvertDecimalToIEEE64(value, cpu);
