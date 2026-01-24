@@ -2,6 +2,8 @@
 using core;
 using System;
 using System.IO;
+using core.accessibility;
+
 
 namespace Float64Converter
 {
@@ -12,6 +14,10 @@ namespace Float64Converter
         // =====================================
         static void Main(string[] args)
         {
+            // Ustawienie kodowania UTF-8 dla konsoli (obsługa polskich znaków)
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.InputEncoding = System.Text.Encoding.UTF8;
+
             while (true)
             {
                 Console.Clear();
@@ -21,7 +27,8 @@ namespace Float64Converter
                 Console.WriteLine("3 - Wyświetl zawartość pliku output.txt");
                 Console.WriteLine("4 - Wyczyść plik output.txt");
                 Console.WriteLine("5 - Wyjście");
-                Console.Write("Wybierz opcję (1-5): ");
+                Console.WriteLine("6 - Dostępność");
+                Console.WriteLine("Wybierz opcję (1-6): ");
 
                 var key = Console.ReadKey(intercept: true);
                 Console.WriteLine();
@@ -42,6 +49,9 @@ namespace Float64Converter
                         break;
                     case '5':
                         return; // koniec programu
+                    case '6':
+                        AccessibilityMenu();
+                        break;
                     default:
                         Console.WriteLine("Nieprawidłowa opcja. Wciśnij dowolny klawisz...");
                         Console.ReadKey();
@@ -77,7 +87,9 @@ namespace Float64Converter
             Console.WriteLine($"Wartość double   : {number}");
             Console.WriteLine();
             Console.WriteLine("Zapis IEEE 754 (64 bity):");
-            Console.WriteLine($"  {sign} | {exponent} | {mantissa}");
+            Console.WriteLine();
+            TableFormatResult.DisplayIEEE754Table(sign, exponent, mantissa);
+            Console.WriteLine();
             Console.WriteLine($"Hex: 0x{hex}");
 
             string outputPath = SaveResultToFile("TRYB 1", input, number, binary, hex);
@@ -172,7 +184,7 @@ namespace Float64Converter
                 try
                 {
                     string content = File.ReadAllText(fullPath);
-                    
+
                     if (string.IsNullOrWhiteSpace(content))
                     {
                         Console.WriteLine("Plik jest pusty.");
@@ -214,7 +226,7 @@ namespace Float64Converter
             // Potwierdzenie użytkownika
             Console.WriteLine("⚠ UWAGA: Ta operacja usunie całą zawartość pliku output.txt!");
             Console.Write("Czy na pewno chcesz kontynuować? (T/N): ");
-            
+
             var key = Console.ReadKey(intercept: false);
             Console.WriteLine();
             Console.WriteLine();
@@ -225,7 +237,7 @@ namespace Float64Converter
                 {
                     // Wyczyszczenie pliku (nadpisanie pustym contentem)
                     File.WriteAllText(fullPath, string.Empty);
-                    
+
                     Console.WriteLine("✓ Plik output.txt został pomyślnie wyczyszczony.");
                 }
                 catch (Exception ex)
@@ -323,13 +335,13 @@ namespace Float64Converter
             }
 
             string hex = "";
-            
+
             // Konwersja po 4 bity (tetrada) na jeden znak hex
             for (int i = 0; i < binary.Length; i += 4)
             {
                 string nibble = binary.Substring(i, 4);
                 int value = BinaryToInt(nibble);
-                
+
                 // Konwersja 0-15 na znak hex (0-9, A-F)
                 if (value < 10)
                     hex += (char)('0' + value);
@@ -360,5 +372,62 @@ namespace Float64Converter
 
             return result;
         }
+
+        // =====================================
+        // OPCJA 6: Dostępność – profile kolorów
+        // =====================================
+        private static void AccessibilityMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Aby zmienić wielkość czcionki użyj: Ctrl + Scroll myszy");
+            Console.WriteLine();
+            Console.WriteLine("== Dostępność – ustawienia kolorów ==\n");
+            Console.WriteLine("1 - Domyślne (reset)");
+            Console.WriteLine("2 - Wysoki kontrast (białe na czarnym)");
+            Console.WriteLine("3 - Odwrócone kolory (czarne na białym)");
+            Console.WriteLine("4 - Dla daltonizmu (niebieski / biały)");
+            Console.WriteLine("5 - Dla światłowstrętu (jasny tekst na ciemnym)");
+            Console.WriteLine("0 - Powrót do menu");
+            Console.Write("\nWybierz opcję: ");
+
+            var key = Console.ReadKey(intercept: true).Key;
+            Console.WriteLine();
+
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    AccessibilityColors.Reset();
+                    break;
+
+                case ConsoleKey.D2:
+                    AccessibilityColors.HighContrast();
+                    break;
+
+                case ConsoleKey.D3:
+                    AccessibilityColors.LightMode();
+                    break;
+
+                case ConsoleKey.D4:
+                    AccessibilityColors.ColorBlindFriendly();
+                    break;
+
+                case ConsoleKey.D5:
+                    AccessibilityColors.LowLight();
+                    break;
+
+                case ConsoleKey.D0:
+                    return;
+
+                default:
+                    Console.WriteLine("Nieprawidłowy wybór.");
+                    Console.ReadKey();
+                    return;
+            }
+
+            Console.WriteLine("\n✓ Zastosowano ustawienia dostępności.");
+            Console.WriteLine("Wciśnij dowolny klawisz, aby wrócić do menu...");
+            Console.ReadKey();
+        }
+
     }
 }

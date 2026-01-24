@@ -1,26 +1,26 @@
-namespace core.utils
+﻿namespace core.utils
 {
-    // Klasa pomocnicza do weryfikacji poprawno?ci konwersji IEEE 754
-    // Umo?liwia rekonstrukcj? warto?ci dziesi?tnej z bit�w oraz por�wnywanie z tolerancj? b??du
+    // Klasa pomocnicza do weryfikacji poprawności konwersji IEEE 754
+    // Umożliwia rekonstrukcję wartości dziesiętnej z bitów oraz porównywanie z tolerancją błędu
     public static class IEEE754Validator
     {
-        // Rekonstruuje warto?? double z komponent�w IEEE 754 (znak, wyk?adnik, mantysa)
-        // Obs?uguje wszystkie przypadki specjalne: zero, infinity, NaN, subnormal, normal
+        // Rekonstruuje wartość double z komponentów IEEE 754 (znak, wykładnik, mantysa)
+        // Obsługuje wszystkie przypadki specjalne: zero, infinity, NaN, subnormal, normal
         public static double ReconstructFromIEEE754(ulong signBit, ulong exponent, ulong mantissa)
         {
-            // Obs?uga zera
+            // Obsługa zera
             if (exponent == 0 && mantissa == 0)
             {
                 return signBit == 1 ? -0.0 : 0.0;
             }
 
-            // Obs?uga niesko?czono?ci
+            // Obsługa nieskończoności
             if (exponent == 0x7FF && mantissa == 0)
             {
                 return signBit == 1 ? double.NegativeInfinity : double.PositiveInfinity;
             }
 
-            // Obs?uga NaN (Not a Number)
+            // Obsługa NaN (Not a Number)
             if (exponent == 0x7FF && mantissa != 0)
             {
                 return double.NaN;
@@ -28,10 +28,10 @@ namespace core.utils
 
             double result;
 
-            // Liczby zdenormalizowane (subnormal) - wyk?adnik = 0, mantysa ? 0
+            // Liczby zdenormalizowane (subnormal) - wykładnik = 0, mantysa ≠ 0
             if (exponent == 0)
             {
-                // Rekonstrukcja mantysy bez ukrytego bitu (r?czne pot?gowanie)
+                // Rekonstrukcja mantysy bez ukrytego bitu (ręczne potęgowanie)
                 double fraction = 0.0;
                 for (int i = 0; i < 52; i++)
                 {
@@ -44,10 +44,10 @@ namespace core.utils
             }
             else // Liczby znormalizowane
             {
-                // Rzeczywisty wyk?adnik (z odj?ciem biasu 1023)
+                // Rzeczywisty wykładnik (z odjęciem biasu 1023)
                 int realExponent = (int)exponent - 1023;
 
-                // Rekonstrukcja mantysy z ukrytym bitem 1 (r?czne pot?gowanie)
+                // Rekonstrukcja mantysy z ukrytym bitem 1 (ręczne potęgowanie)
                 double fraction = 1.0;
                 for (int i = 0; i < 52; i++)
                 {
@@ -64,16 +64,16 @@ namespace core.utils
             return signBit == 1 ? -result : result;
         }
 
-        // Por�wnuje dwie warto?ci double z konfigurowaln? tolerancj? b??du
-        // U?ywa r?cznych implementacji operacji matematycznych
+        // Porównuje dwie wartości double z konfigurowalną tolerancją błędu
+        // Używa ręcznych implementacji operacji matematycznych
         public static bool AreEqual(double a, double b, double tolerance = 1e-10)
         {
-            // Obs?uga warto?ci specjalnych (r?czne sprawdzanie)
+            // Obsługa wartości specjalnych (ręczne sprawdzanie)
             if (MathHelpers.IsNaN(a) && MathHelpers.IsNaN(b)) return true;
             if (MathHelpers.IsInfinity(a) && MathHelpers.IsInfinity(b)) return a == b;
             if (a == 0.0 && b == 0.0) return true;
 
-            // Por�wnanie z tolerancj? (r?czne obliczenia)
+            // Porównanie z tolerancją (ręczne obliczenia)
             double diff = MathHelpers.Abs(a - b);
             double maxAbs = MathHelpers.Max(MathHelpers.Abs(a), MathHelpers.Abs(b));
             

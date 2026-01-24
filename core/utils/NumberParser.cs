@@ -1,7 +1,7 @@
 namespace core.utils
 {
-    // R?czny parser liczb dziesi?tnych i notacji naukowej
-    // Nie u?ywa double.TryParse() - ca?kowicie manualna implementacja parsowania
+    // Ręczny parser liczb dziesiętnych i notacji naukowej
+    // Nie używa double.TryParse() - całkowicie manualna implementacja parsowania
     public static class NumberParser
     {
         public enum EdgeCase
@@ -12,10 +12,10 @@ namespace core.utils
             NegativeInfinity,
             NaN
         }
-        // Parsuje string na warto?? double
-        // Obs?uguje: liczby ca?kowite, u?amki dziesi?tne, notacj? naukow? (e/E), liczby ujemne
-        // Akceptuje zar�wno kropk? jak i przecinek jako separator dziesi?tny
-        // Zwraca true je?li parsowanie si? powiod?o, false w przeciwnym razie
+        // Parsuje string na wartość double
+        // Obsługuje: liczby całkowite, ułamki dziesiętne, notację naukową (e/E), liczby ujemne
+        // Akceptuje zarówno kropkę jak i przecinek jako separator dziesiętny
+        // Zwraca true jeśli parsowanie się powiodło, false w przeciwnym razie
         public static bool TryParse(string input, out double result, out EdgeCase edgeCase)
         {
             result = 0.0;
@@ -26,15 +26,15 @@ namespace core.utils
 
             input = input.Trim();
 
-            // Wykrywanie warto?ci specjalnych: Infinity, -Infinity, NaN
-            if (input.Equals("?", System.StringComparison.OrdinalIgnoreCase) ||
+            // Wykrywanie wartości specjalnych: Infinity, -Infinity, NaN
+            if (input.Equals("∞", System.StringComparison.OrdinalIgnoreCase) ||
                 input.Equals("Infinity", System.StringComparison.OrdinalIgnoreCase))
             {
                 result = double.PositiveInfinity;
                 edgeCase = EdgeCase.PositiveInfinity;
                 return true;
             }
-            if (input.Equals("-?", System.StringComparison.OrdinalIgnoreCase) ||
+            if (input.Equals("-∞", System.StringComparison.OrdinalIgnoreCase) ||
                 input.Equals("-Infinity", System.StringComparison.OrdinalIgnoreCase))
             {
                 result = double.NegativeInfinity;
@@ -73,7 +73,7 @@ namespace core.utils
             if (index >= input.Length)
                 return false;
 
-            // Krok 2: Parsowanie cz??ci ca?kowitej i u?amkowej (przed wyk?adnikiem 'e'/'E')
+            // Krok 2: Parsowanie części całkowitej i ułamkowej (przed wykładnikiem 'e'/'E')
             double mantissa = 0.0;
             bool hasDot = false;
             double fractionMultiplier = 0.1;
@@ -90,12 +90,12 @@ namespace core.utils
 
                     if (!hasDot)
                     {
-                        // Cz??? ca?kowita
+                        // Część całkowita
                         mantissa = mantissa * 10.0 + digit;
                     }
                     else
                     {
-                        // Cz??? u?amkowa
+                        // Część ułamkowa
                         mantissa += digit * fractionMultiplier;
                         fractionMultiplier /= 10.0;
                     }
@@ -103,18 +103,18 @@ namespace core.utils
                 }
                 else if ((c == '.' || c == ',') && !hasDot)
                 {
-                    // Separator dziesi?tny (obs?uga kropki i przecinka)
+                    // Separator dziesiętny (obsługa kropki i przecinka)
                     hasDot = true;
                     index++;
                 }
                 else if (c == 'e' || c == 'E')
                 {
-                    // Pocz?tek notacji naukowej
+                    // Początek notacji naukowej
                     break;
                 }
                 else
                 {
-                    // Nieprawid?owy znak
+                    // Nieprawidłowy znak
                     return false;
                 }
             }
@@ -122,7 +122,7 @@ namespace core.utils
             if (!hasDigits)
                 return false;
 
-            // Krok 3: Parsowanie wyk?adnika w notacji naukowej (opcjonalne)
+            // Krok 3: Parsowanie wykładnika w notacji naukowej (opcjonalne)
             int exponent = 0;
             if (index < input.Length && (input[index] == 'e' || input[index] == 'E'))
             {
@@ -133,7 +133,7 @@ namespace core.utils
 
                 bool isNegativeExponent = false;
 
-                // Sprawdzenie znaku wyk?adnika
+                // Sprawdzenie znaku wykładnika
                 if (input[index] == '-')
                 {
                     isNegativeExponent = true;
@@ -147,7 +147,7 @@ namespace core.utils
                 if (index >= input.Length)
                     return false;
 
-                // Parsowanie cyfr wyk?adnika
+                // Parsowanie cyfr wykładnika
                 bool hasExponentDigits = false;
                 while (index < input.Length)
                 {
@@ -161,7 +161,7 @@ namespace core.utils
                     }
                     else
                     {
-                        // Nieprawid?owy znak w wyk?adniku
+                        // Nieprawidłowy znak w wykładniku
                         return false;
                     }
                 }
@@ -173,19 +173,19 @@ namespace core.utils
                     exponent = -exponent;
             }
 
-            // Sprawdzenie, czy zosta?y jakie? nieprzetworzone znaki
+            // Sprawdzenie, czy zostały jakieś nieprzetworzone znaki
             if (index < input.Length)
                 return false;
 
-            // Krok 4: Obliczenie ko?cowej warto?ci: mantissa � 10^exponent
+            // Krok 4: Obliczenie końcowej wartości: mantissa × 10^exponent
             result = mantissa;
 
             if (exponent != 0)
             {
-                // R?czne obliczenie 10^exponent (iteracyjne mno?enie/dzielenie)
+                // Ręczne obliczenie 10^exponent (iteracyjne mnożenie/dzielenie)
                 if (exponent > 0)
                 {
-                    // Mno?enie przez 10^exponent
+                    // Mnożenie przez 10^exponent
                     for (int i = 0; i < exponent; i++)
                     {
                         result *= 10.0;
