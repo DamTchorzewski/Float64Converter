@@ -73,6 +73,7 @@ Po uruchomieniu zobaczysz interaktywne menu:
 3 - Wyświetl zawartość pliku output.txt
 4 - Wyczyść plik output.txt
 5 - Wyjście
+6 - Dostępność
 ```
 
 **Plik wyników:** `bin/Debug/net8.0/output.txt`  
@@ -133,6 +134,9 @@ Float64Converter/
 ├── core/                         # Główna logika aplikacji
 │   ├── ConversionEngine.cs       # Silnik konwersji i wyświetlania wyników IEEE 754
 │   │
+│   ├── accessibility/            # Moduł dostępności
+│   │   └── AccessibilityColors.cs # Profile kolorów dla użytkowników z niepełnosprawnościami
+│   │
 │   ├── components/               # Komponenty elektroniczne
 │   │   └── FullAdder.cs         # Pełny sumator binarny (używany w architekturze)
 │   │
@@ -152,7 +156,8 @@ Float64Converter/
 │       ├── Float64ConverterUtils.cs  # Ręczna konwersja decimal → IEEE 754
 │       ├── IEEE754Validator.cs       # Weryfikacja poprawności przez rekonstrukcję
 │       ├── MathHelpers.cs            # Ręczne funkcje matematyczne (Abs, Pow2, IsNaN, etc.)
-│       └── NumberParser.cs           # Ręczny parser liczb i notacji naukowej
+│       ├── NumberParser.cs           # Ręczny parser liczb i notacji naukowej
+│       └── TableFormatResult.cs      # Formatowanie tabelaryczne wyników
 │
 ├── bin/                          # Pliki wynikowe kompilacji
 │   ├── Debug/net8.0/            # Kompilacja Debug
@@ -177,6 +182,8 @@ Float64Converter/
 - ✅ **Interfejs konsolowy** - menu z trybem standardowym i krokiem po kroku
 - ✅ **Zapis do pliku** - automatyczne logowanie wyników konwersji do `bin/Debug/net8.0/output.txt`
 - ✅ **Zarządzanie plikiem** - podgląd i czyszczenie zawartości przez menu
+- ✅ **Formatowanie tabelaryczne** - czytelna prezentacja bitów IEEE 754 w formacie tabelarycznym
+- ✅ **Dostępność** - 5 profili kolorów dla użytkowników z niepełnosprawnościami (wysoki kontrast, daltonizm, światłowstręt)
 
 ---
 
