@@ -22,3 +22,6 @@ obj/
 
 # Temporary files
 ~$*
+
+# Local working files (standards/scratch.md)
+/.scratch/

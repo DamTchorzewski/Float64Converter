@@ -1,4 +1,13 @@
-﻿# Float64Converter
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/banner-dark.png">
+    <img src="docs/images/banner-light.png" alt="Float64Converter: console simulator of the decimal to IEEE 754 conversion" width="100%">
+  </picture>
+</p>
+
+<p align="center">
+  <img src="docs/images/showcase.jpg" alt="Float64Converter: the conversion of 5,75 and the main menu in a terminal" width="100%">
+</p>
 
 ## About
 
@@ -51,17 +60,19 @@ The interface texts and code comments are Polish; identifiers, commits and branc
 
 ## Screenshots
 
-The application is a console program; this is what the menu looks like (texts are Polish):
+The output is real: `tools/projects/Float64Converter/make-transcripts.mjs` runs the program's own code with a fixed
+input and `tools/readme-images` draws what it printed. The texts are Polish. Two of the five accessibility profiles
+(light mode and colour-blind) on the conversion of `-0,125`:
 
-```
-=== Symulator konwersji liczby dziesiętnej na IEEE 754 (double precision) ===
-1 - Konwersja (wynik binarny + szesnastkowy)
-2 - Konwersja (tryb KROK PO KROKU + szczegóły)
-3 - Wyświetl zawartość pliku output.txt
-4 - Wyczyść plik output.txt
-5 - Wyjście
-6 - Dostępność
-```
+<p align="center">
+  <img src="docs/images/themes.jpg" alt="The result of converting -0,125 in the light and colour-blind profiles" width="100%">
+</p>
+
+Step-by-step mode on `0,1`, which the program notes is rounded to the nearest representable double:
+
+<p align="center">
+  <img src="docs/images/steps.jpg" alt="Step-by-step mode: sign, exponent and mantissa explained" width="100%">
+</p>
 
 A record in `output.txt`:
 
@@ -109,7 +120,7 @@ core/gates/                   AndGate, OrGate, XorGate
 core/utils/                   Float64ConverterUtils, IEEE754Validator, MathHelpers, NumberParser, TableFormatResult
 Float64Converter.Tests/       xUnit tests, one file per module
 .github/workflows/            dotnet-ci.yml: build and test
-docs/                         documentation
+docs/                         documentation; docs/images/ holds the README images (generated)
 ```
 
 ## Branches and workflows
@@ -120,7 +131,9 @@ every pull request.
 
 **Departures from the standards (and why):**
 
-- **No banner or screenshots:** a console program with no site to open; the menu and the log are shown as text above.
+- **No "Open site" button and no phone strip:** a console program has no site and no mobile view; the images are
+  terminal windows with real output, and the logo is a wordmark (the project has none).
+- **No company branding in the footer:** a university team project, with several authors.
 - **No husky / commitlint / lint-staged:** a .NET project without a Node toolchain; the commit style is kept by hand.
 - **CI on `main` and `codex/*` only:** the workflow does not run on `develop`.
 - **Interface texts and code comments in Polish:** the course and its readers are Polish.
@@ -130,6 +143,9 @@ every pull request.
 | Document                                   | Covers                                                   |
 | ------------------------------------------ | -------------------------------------------------------- |
 | [docs/repository.md](docs/repository.md)   | GitHub description and topics, the course report link    |
+
+The README images (`docs/images/`) are regenerated with `tools/readme-images` (profile `Float64Converter`), after
+`make-transcripts.mjs` has captured the output; the working shots go to `.scratch/`.
 
 The detailed description of the algorithm, the data structures and the test results is in the
 [project report](https://vistulaedu-my.sharepoint.com/:w:/g/personal/dtchorz2_stu_vistula_edu_pl/EcpNXhLCXCpBplqFaHDzejMB16HtcaoQuKZqgOCc8tObKQ?e=B7cmwq)
