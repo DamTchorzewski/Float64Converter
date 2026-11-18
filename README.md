@@ -68,7 +68,7 @@ input and `tools/readme-images` draws what it printed. The texts are Polish. Two
   <img src="docs/images/themes.jpg" alt="The result of converting -0,125 in the light and colour-blind profiles" width="100%">
 </p>
 
-Step-by-step mode on `0,1`, which the program notes is rounded to the nearest representable double:
+Step-by-step mode on `0,1` (a number a double cannot hold exactly): sign, exponent (biased and unbiased) and mantissa, one key press at a time:
 
 <p align="center">
   <img src="docs/images/steps.jpg" alt="Step-by-step mode: sign, exponent and mantissa explained" width="100%">
