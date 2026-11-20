@@ -2,6 +2,10 @@
 
 Rzeczy, które ustawia się na GitHubie ręcznie (nie da się ich zapisać w plikach repozytorium). Przegląd projektu: [README](../README.md).
 
+## Nazwa repozytorium: `ieee754-conversion-simulator`
+
+Standard nazw repozytoriów: `reops/standards/repo-names.md`. Repozytorium nazywało się wcześniej `Float64Converter`; od 2026-11-20 nazywa się `ieee754-conversion-simulator` (nazwa mówi, czym jest projekt: fraza szukana na GitHubie). GitHub przekierowuje stary adres repozytorium. Projekt, rozwiązanie i przestrzeń nazw C# nadal nazywają się `Float64Converter` (zmiana nazwy repozytorium nie dotyka kodu).
+
 ## Opis i tagi (About)
 
 GitHub: strona repozytorium → ⚙ obok „About” → pola poniżej. Opis ma limit 350 znaków, tagi (topics) pisze się małymi literami z myślnikami, najwyżej 20.
@@ -9,7 +13,7 @@ GitHub: strona repozytorium → ⚙ obok „About” → pola poniżej. Opis ma 
 **Opis (Description):**
 
 ```text
-Console simulator that converts a decimal number to 64-bit IEEE 754 (double precision) in C#. Hand-written number parser, logic gates, full adder, ALU and a 64-bit CPU model, step-by-step mode, accessibility colour profiles and xUnit tests. University team project (Computer Systems Architecture).
+Console simulator of IEEE 754 double-precision conversion in C#, with step-by-step output.
 ```
 
 **Strona (Website):** puste (aplikacja konsolowa, nie ma strony).
@@ -17,13 +21,13 @@ Console simulator that converts a decimal number to 64-bit IEEE 754 (double prec
 **Tagi (Topics):**
 
 ```text
-csharp dotnet dotnet-8 ieee-754 floating-point double-precision binary-converter console-application computer-architecture logic-gates alu xunit github-actions university-project
+csharp dotnet dotnet-8 ieee-754 floating-point double-precision binary-converter console-application computer-architecture logic-gates alu xunit github-actions
 ```
 
 Z GitHub CLI (`gh`) to samo jedną komendą:
 
 ```bash
-gh repo edit DamTchorzewski/Float64Converter --description "Console simulator that converts a decimal number to 64-bit IEEE 754 (double precision) in C#. Hand-written number parser, logic gates, full adder, ALU and a 64-bit CPU model, step-by-step mode, accessibility colour profiles and xUnit tests. University team project (Computer Systems Architecture)." --add-topic csharp,dotnet,dotnet-8,ieee-754,floating-point,double-precision,binary-converter,console-application,computer-architecture,logic-gates,alu,xunit,github-actions,university-project
+gh repo edit DamTchorzewski/ieee754-conversion-simulator --description "Console simulator of IEEE 754 double-precision conversion in C#, with step-by-step output." --add-topic csharp --add-topic dotnet --add-topic dotnet-8 --add-topic ieee-754 --add-topic floating-point --add-topic double-precision --add-topic binary-converter --add-topic console-application --add-topic computer-architecture --add-topic logic-gates --add-topic alu --add-topic xunit --add-topic github-actions --add-topic
 ```
 
 ## Raport projektu
@@ -32,8 +36,8 @@ Szczegółowy opis algorytmu, struktur danych i wyników testów jest w raporcie
 
 ## Ustawienia do włączenia
 
-| Gdzie (GitHub)                                          | Co ustawić                                                                  |
+| Gdzie (GitHub) | Co ustawić |
 | ------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Settings → General → Default branch                     | `main` (już jest)                                                           |
-| Settings → Branches (albo Rulesets) → `main`, `develop` | zablokuj force push i usuwanie gałęzi                                       |
-| `.github/workflows/dotnet-ci.yml`                       | uruchamia się na `main` i `codex/*`; żeby działał też na `develop`, dopisz tę gałąź do `on.push.branches` |
+| Settings → General → Default branch | `main` (już jest) |
+| Settings → Branches (albo Rulesets) → `main`, `develop` | zablokuj force push i usuwanie gałęzi |
+| `.github/workflows/dotnet-ci.yml` | uruchamia się na `main` i `codex/*`; żeby działał też na `develop`, dopisz tę gałąź do `on.push.branches` |
