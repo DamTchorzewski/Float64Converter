@@ -12,8 +12,7 @@
 ## About
 
 **Float64Converter** is a console simulator that converts a decimal number into the 64-bit IEEE 754 floating-point
-format (double precision), written in C# for the *Computer Systems Architecture* course (team project 11). The
-conversion is built from first principles: logic gates, a full adder, registers, an ALU and a small 64-bit CPU
+format (double precision), written in C#. The conversion is built from first principles: logic gates, a full adder, registers, an ALU and a small 64-bit CPU
 model, with no library shortcut for the number format.
 
 - **Hand-made conversion.** No `BitConverter`, no `Convert.ToString`, no `System.Math`: the decimal-to-binary
@@ -31,12 +30,11 @@ model, with no library shortcut for the number format.
 - **Tested:** 28 xUnit tests (gates, ALU and CPU, parser, maths helpers, validator, conversion engine), run by a
   GitHub Actions workflow.
 
-> **Status:** a finished course project. The user interface, the log and the code comments are in Polish;
-> identifiers are in English.
+> **Status:** the user interface, the log and the code comments are in Polish; identifiers are in English.
 
 ## Team
 
-Team project 11, *Computer Systems Architecture*:
+The team:
 
 | Member                | Role                                                              |
 | --------------------- | ----------------------------------------------------------------- |
@@ -133,10 +131,10 @@ every pull request.
 
 - **No "Open site" button and no phone strip:** a console program has no site and no mobile view; the images are
   terminal windows with real output, and the logo is a wordmark (the project has none).
-- **No company branding in the footer:** a university team project, with several authors.
+- **No company branding in the footer:** the repository belongs to a team of authors.
 - **No husky / commitlint / lint-staged:** a .NET project without a Node toolchain; the commit style is kept by hand.
 - **CI on `main` and `codex/*` only:** the workflow does not run on `develop`.
-- **Interface texts and code comments in Polish:** the course and its readers are Polish.
+- **Interface texts and code comments in Polish:** the users of the program speak Polish.
 - **The C# project keeps its name:** the repository is called `ieee754-conversion-simulator` (a name to find it by), while
   the project, the solution and the namespace stay `Float64Converter`.
 
@@ -144,14 +142,10 @@ every pull request.
 
 | Document                                   | Covers                                                   |
 | ------------------------------------------ | -------------------------------------------------------- |
-| [docs/repository.md](docs/repository.md)   | GitHub description and topics, the course report link    |
+| [docs/repository.md](docs/repository.md)   | GitHub description and topics                          |
 
 The README images (`docs/images/`) are regenerated with `tools/readme-images` (profile `ieee754-conversion-simulator`), after
 `make-transcripts.mjs` has captured the output; the working shots go to `.scratch/`.
-
-The detailed description of the algorithm, the data structures and the test results is in the
-[project report](https://vistulaedu-my.sharepoint.com/:w:/g/personal/dtchorz2_stu_vistula_edu_pl/EcpNXhLCXCpBplqFaHDzejMB16HtcaoQuKZqgOCc8tObKQ?e=B7cmwq)
-(SharePoint, Vistula University; access depends on the university account).
 
 ---
 

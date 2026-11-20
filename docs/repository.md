@@ -21,13 +21,13 @@ Console simulator of IEEE 754 double-precision conversion in C#, with step-by-st
 **Tagi (Topics):**
 
 ```text
-csharp dotnet dotnet-8 ieee-754 floating-point double-precision binary-converter console-application computer-architecture logic-gates alu xunit github-actions university-project
+csharp dotnet dotnet-8 ieee-754 floating-point double-precision binary-converter console-application computer-architecture logic-gates alu xunit github-actions
 ```
 
 Z GitHub CLI (`gh`) to samo jedną komendą:
 
 ```bash
-gh repo edit DamTchorzewski/ieee754-conversion-simulator --description "Console simulator of IEEE 754 double-precision conversion in C#, with step-by-step output." --add-topic csharp --add-topic dotnet --add-topic dotnet-8 --add-topic ieee-754 --add-topic floating-point --add-topic double-precision --add-topic binary-converter --add-topic console-application --add-topic computer-architecture --add-topic logic-gates --add-topic alu --add-topic xunit --add-topic github-actions --add-topic university-project
+gh repo edit DamTchorzewski/ieee754-conversion-simulator --description "Console simulator of IEEE 754 double-precision conversion in C#, with step-by-step output." --add-topic csharp --add-topic dotnet --add-topic dotnet-8 --add-topic ieee-754 --add-topic floating-point --add-topic double-precision --add-topic binary-converter --add-topic console-application --add-topic computer-architecture --add-topic logic-gates --add-topic alu --add-topic xunit --add-topic github-actions --add-topic
 ```
 
 ## Raport projektu
@@ -36,8 +36,8 @@ Szczegółowy opis algorytmu, struktur danych i wyników testów jest w raporcie
 
 ## Ustawienia do włączenia
 
-| Gdzie (GitHub)                                          | Co ustawić                                                                  |
+| Gdzie (GitHub) | Co ustawić |
 | ------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Settings → General → Default branch                     | `main` (już jest)                                                           |
-| Settings → Branches (albo Rulesets) → `main`, `develop` | zablokuj force push i usuwanie gałęzi                                       |
-| `.github/workflows/dotnet-ci.yml`                       | uruchamia się na `main` i `codex/*`; żeby działał też na `develop`, dopisz tę gałąź do `on.push.branches` |
+| Settings → General → Default branch | `main` (już jest) |
+| Settings → Branches (albo Rulesets) → `main`, `develop` | zablokuj force push i usuwanie gałęzi |
+| `.github/workflows/dotnet-ci.yml` | uruchamia się na `main` i `codex/*`; żeby działał też na `develop`, dopisz tę gałąź do `on.push.branches` |
