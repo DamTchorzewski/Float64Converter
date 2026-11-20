@@ -60,7 +60,7 @@ The interface texts and code comments are Polish; identifiers, commits and branc
 
 ## Screenshots
 
-The output is real: `tools/projects/Float64Converter/make-transcripts.mjs` runs the program's own code with a fixed
+The output is real: `tools/projects/ieee754-conversion-simulator/make-transcripts.mjs` runs the program's own code with a fixed
 input and `tools/readme-images` draws what it printed. The texts are Polish. Two of the five accessibility profiles
 (light mode and colour-blind) on the conversion of `-0,125`:
 
@@ -88,8 +88,8 @@ hex     : 0x4017000000000000
 ## Quick start
 
 ```bash
-git clone https://github.com/DamTchorzewski/Float64Converter.git
-cd Float64Converter
+git clone https://github.com/DamTchorzewski/ieee754-conversion-simulator.git
+cd ieee754-conversion-simulator
 dotnet run --project Float64Converter.csproj
 ```
 
@@ -137,6 +137,8 @@ every pull request.
 - **No husky / commitlint / lint-staged:** a .NET project without a Node toolchain; the commit style is kept by hand.
 - **CI on `main` and `codex/*` only:** the workflow does not run on `develop`.
 - **Interface texts and code comments in Polish:** the course and its readers are Polish.
+- **The C# project keeps its name:** the repository is called `ieee754-conversion-simulator` (a name to find it by), while
+  the project, the solution and the namespace stay `Float64Converter`.
 
 ## Documentation
 
@@ -144,7 +146,7 @@ every pull request.
 | ------------------------------------------ | -------------------------------------------------------- |
 | [docs/repository.md](docs/repository.md)   | GitHub description and topics, the course report link    |
 
-The README images (`docs/images/`) are regenerated with `tools/readme-images` (profile `Float64Converter`), after
+The README images (`docs/images/`) are regenerated with `tools/readme-images` (profile `ieee754-conversion-simulator`), after
 `make-transcripts.mjs` has captured the output; the working shots go to `.scratch/`.
 
 The detailed description of the algorithm, the data structures and the test results is in the
